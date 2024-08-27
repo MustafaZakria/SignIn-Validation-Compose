@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Input Validation App</string>
+    <string name="sign_in">Sign in</string>
+    <string name="email_hint">Enter your Email</string>
+    <string name="password_hint">Enter your Password</string>
+    <string name="confirm_password_hint">Confirm your Password</string>
+
+    <string name="successful_sign_in">Successful Sign In!</string>
+</resources>
