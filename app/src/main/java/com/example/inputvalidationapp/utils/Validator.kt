@@ -6,10 +6,10 @@ import com.example.inputvalidationapp.models.PasswordValidationType
 
 object Validator {
 
-    fun validateEmail(email: String): EmailValidationType {
+    fun validateEmail(email: String, usersList: List<String>): EmailValidationType {
         return if (email.isBlank())
             EmailValidationType.EmptyEmail
-        else if (listOf("", "").contains(email))
+        else if (usersList.contains(email))
             EmailValidationType.ExistEmail
         else if (Patterns.EMAIL_ADDRESS.matcher(email).matches())
             EmailValidationType.ValidEmail

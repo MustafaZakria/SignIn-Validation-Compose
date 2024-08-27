@@ -21,11 +21,12 @@ class MainViewModel : ViewModel() {
     private val _validationState = mutableStateOf(ValidationState())
     val validationState: State<ValidationState> = _validationState
 
+    val currentUsersList = listOf<String>()
 
     fun onChangeEmail(newValue: String) {
         _emailState.value = newValue
         _validationState.value =
-            _validationState.value.copy(emailErrorState = validateEmail(newValue).msg)
+            _validationState.value.copy(emailErrorState = validateEmail(newValue, currentUsersList).msg)
     }
 
     fun onChangePassword(newValue: String) {
@@ -54,7 +55,7 @@ class MainViewModel : ViewModel() {
         val passwordConfirm = _confirmPasswordState.value
 
         _navigateToSuccessScreen.value =
-            validateEmail(email).isValid &&
+            validateEmail(email, currentUsersList).isValid &&
                     validatePassword(password).isValid &&
                     validateMatchingPasswords(password, passwordConfirm).isValid
     }
