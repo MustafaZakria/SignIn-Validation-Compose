@@ -13,6 +13,5 @@ object Constants {
 
     const val EMPTY_STRING = ""
 
-    const val EMAIL_REGEX = ""
-    const val PASSWORD_REGEX = ""
+    const val SUCCESSFUL_SIGN_IN = "Successful Sign In!"
 }

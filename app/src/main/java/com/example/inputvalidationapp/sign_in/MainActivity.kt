@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -50,6 +51,12 @@ import com.example.inputvalidationapp.sign_in.components.CustomizedButton
 import com.example.inputvalidationapp.sign_in.components.CustomizedTextInput
 import com.example.inputvalidationapp.sign_in.components.SnackBar
 import com.example.inputvalidationapp.ui.theme.InputValidationAppTheme
+import com.example.inputvalidationapp.utils.Constants.SUCCESSFUL_SIGN_IN
+import com.example.modified_snackbar.presentation.ComposeModifiedSnackbar
+import com.example.modified_snackbar.presentation.ComposeModifiedSnackbarSuccess
+import com.example.modified_snackbar.presentation.rememberComposeModifiedSnackbarState
+import com.example.modified_snackbar.util.ComposeModifiedSnackbarPosition
+import com.example.modified_snackbar.util.ComposeModifierSnackbarDuration
 
 class MainActivity : ComponentActivity() {
 
@@ -77,38 +84,52 @@ fun ValidationScreen(viewModel: MainViewModel) {
     val passwordVisible = rememberSaveable { mutableStateOf(false) }
     val confirmPasswordVisible = rememberSaveable { mutableStateOf(false) }
 
+    val snackBarState = rememberComposeModifiedSnackbarState()
+
     Surface(
         modifier = Modifier.fillMaxSize()
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+        Box(
+            contentAlignment = Alignment.Center
         ) {
-            Spacer(modifier = Modifier.weight(1f))
-            AuthFieldsColumn(
-                emailState.value,
-                passwordState.value,
-                confirmPasswordState.value,
-                validationState,
-                onChangeEmail = { value -> viewModel.onChangeEmail(value) },
-                onChangePassword = { value -> viewModel.onChangePassword(value) },
-                onChangeConfirmPassword = { value -> viewModel.onChangePasswordConfirm(value) },
-                passwordVisible = passwordVisible.value,
-                confirmPasswordVisible = confirmPasswordVisible.value,
-                onPasswordIconClick = { passwordVisible.value = !(passwordVisible.value)},
-                onConfirmPassIconClick = { confirmPasswordVisible.value = !(confirmPasswordVisible.value)}
-            )
-            CustomizedButton(stringResource(id = R.string.sign_in)) {
-                viewModel.validateAndNavigate()
+            Column(
+                verticalArrangement = Arrangement.Center
+            ) {
+                AuthFieldsColumn(
+                    emailState.value,
+                    passwordState.value,
+                    confirmPasswordState.value,
+                    validationState,
+                    onChangeEmail = { value -> viewModel.onChangeEmail(value) },
+                    onChangePassword = { value -> viewModel.onChangePassword(value) },
+                    onChangeConfirmPassword = { value -> viewModel.onChangePasswordConfirm(value) },
+                    passwordVisible = passwordVisible.value,
+                    confirmPasswordVisible = confirmPasswordVisible.value,
+                    onPasswordIconClick = { passwordVisible.value = !(passwordVisible.value) },
+                    onConfirmPassIconClick = {
+                        confirmPasswordVisible.value = !(confirmPasswordVisible.value)
+                    }
+                )
+                CustomizedButton(stringResource(id = R.string.sign_in)) {
+                    viewModel.validateAndNavigate()
+                    if (navigateState.value) {
+                        snackBarState.showSnackbar(SUCCESSFUL_SIGN_IN)
+                    }
+                }
             }
-            Spacer(modifier = Modifier.weight(0.5f))
-            if (navigateState.value) {
-                SnackBar(stringResource(id = R.string.successful_sign_in))
-            }
-
         }
+//        Box(contentAlignment = Alignment.BottomCenter) {
+//            if (navigateState.value) {
+//                SnackBar(stringResource(id = R.string.successful_sign_in))
+//            }
+//        }
+        ComposeModifiedSnackbarSuccess(
+            state = snackBarState,
+            position = ComposeModifiedSnackbarPosition.Bottom,
+            duration = ComposeModifierSnackbarDuration.SHORT,
+            withDismissAction = true
+        )
+
     }
 }
 

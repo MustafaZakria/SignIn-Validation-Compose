@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.inputvalidationapp"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -66,6 +66,7 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    implementation("androidx.compose.material:material-icons-extended:1.6.8")
+    implementation(libs.androidx.material.icons.extended)
+    implementation("com.github.saimon4u:Compose-Modified-Snackbar:1.0.1")
 
 }
